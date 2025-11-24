@@ -6,7 +6,7 @@ public record Tasks (
         Long id,
         String task,
         LocalDateTime date,
-        Boolean status
+        Status status
 ){
 
 }

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Table(name = "Tasks")
+@Table(name = "tasks")
 @Entity
 public class TaskEntity {
 
@@ -21,7 +21,8 @@ public class TaskEntity {
     private LocalDateTime date;
 
     @Column(name = "status")
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 
     public Long getId() {
@@ -48,11 +49,11 @@ public class TaskEntity {
         this.date = date;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -60,7 +61,7 @@ public class TaskEntity {
             Long id,
             String task,
             LocalDateTime date,
-            Boolean status){
+            Status status){
 
         this.id=id;
         this.task=task;
