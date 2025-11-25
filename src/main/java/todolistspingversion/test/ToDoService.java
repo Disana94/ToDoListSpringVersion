@@ -37,7 +37,7 @@ public class ToDoService {
                         .orElseThrow(() -> new NoSuchElementException());
         task.setStatus(Status.Done);
         TaskEntity saved = repository.save(task);
-        return toTasks(task);
+        return toTasks(saved);
 
     }
 
