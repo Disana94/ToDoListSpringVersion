@@ -32,8 +32,8 @@ public class ToDoService {
 
     }
 
-    public Tasks putTask(Long id){
-        TaskEntity task = repository.findById(id)
+    public Tasks putTask(Tasks Task){
+        TaskEntity task = repository.findById(Task.id())
                         .orElseThrow(() -> new NoSuchElementException());
         task.setStatus(Status.Done);
         TaskEntity saved = repository.save(task);
@@ -48,8 +48,6 @@ public class ToDoService {
             throw  new NoSuchElementException("No such element by id: " + id);
         }
     }
-
-
 
     //вид принять данные и показать
     private Tasks toTasks(TaskEntity tasks){
