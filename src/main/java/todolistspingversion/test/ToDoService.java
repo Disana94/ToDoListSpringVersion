@@ -2,6 +2,7 @@ package todolistspingversion.test;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ToDoService {
@@ -19,11 +20,34 @@ public class ToDoService {
                 .toList();
     }
 
+    public Tasks getTaskById(Long id){
+        TaskEntity taskById = repository.getById(id);
+        return(toTasks(taskById));
+    }
+
     public Tasks createTask(Tasks tasks){
        TaskEntity task = toEntity(tasks);
        TaskEntity savedEntity = repository.save(task);
        return toTasks(savedEntity);
 
+    }
+
+    public Tasks putTask(Tasks Task){
+        TaskEntity task = repository.findById(Task.id())
+                        .orElseThrow(() -> new NoSuchElementException());
+        task.setStatus(Status.Done);
+        task.setTask(Task.task());
+        TaskEntity saved = repository.save(task);
+        return toTasks(saved);
+
+    }
+
+    public void deleteTask(Long id){
+        if(repository.existsById(id)){
+            repository.deleteById(id);
+        }else{
+            throw  new NoSuchElementException("No such element by id: " + id);
+        }
     }
 
     //вид принять данные и показать
@@ -35,6 +59,7 @@ public class ToDoService {
                 tasks.getStatus()
         );
     }
+
     //вид для записи в бд
     private TaskEntity toEntity(Tasks task){
         return new TaskEntity(
@@ -44,6 +69,7 @@ public class ToDoService {
                 Status.InProgress
         );
     }
+
 
 }
 //тут вся логика

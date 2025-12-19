@@ -7,7 +7,5 @@ public record Tasks (
         String task,
         LocalDateTime date,
         Status status
-){
-
-}
+){}
 //это чтобы использовать в коде
