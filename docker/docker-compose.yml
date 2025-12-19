@@ -1,6 +1,6 @@
 services:
   app:
-    image: 'd16e7536aba0'
+    image: 'b358b70cfd60'
     build: .
     container_name: app
     expose:
@@ -21,4 +21,3 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
-
