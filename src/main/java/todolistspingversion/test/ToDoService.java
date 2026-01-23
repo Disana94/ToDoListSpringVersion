@@ -32,14 +32,21 @@ public class ToDoService {
 
     }
 
-    public Tasks putTask(Tasks Task){
+    public Tasks editTask(Tasks Task){
         TaskEntity task = repository.findById(Task.id())
-                        .orElseThrow(() -> new NoSuchElementException());
-        task.setStatus(Status.Done);
+                .orElseThrow(NoSuchElementException::new);
         task.setTask(Task.task());
         TaskEntity saved = repository.save(task);
         return toTasks(saved);
+    }
 
+
+    public Tasks completeTask(Long id){
+        TaskEntity task = repository.findById(id)
+                .orElseThrow(NoSuchElementException::new);
+        task.setStatus(Status.Done);
+        TaskEntity saved = repository.save(task);
+        return toTasks(saved);
     }
 
     public void deleteTask(Long id){
@@ -72,4 +79,3 @@ public class ToDoService {
 
 
 }
-//тут вся логика

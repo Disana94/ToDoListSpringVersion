@@ -49,25 +49,37 @@ public class ToDoContoller {
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Tasks> putTask(
-            @PathVariable("id") Long id,
-            @Valid @RequestBody TaskDto task
-    ){
-        Tasks taskToService = new Tasks(
-                id,
-                task.task(),
-                null,
-                Status.InProgress
-        );
-        try{
-            Tasks update = toDoService.putTask(taskToService);
-            return ResponseEntity.ok(update);
-        }catch (NoSuchElementException e){
+    @PutMapping("/{id}/edit")
+    public ResponseEntity<Tasks> editTask(@PathVariable Long id, @Valid @RequestBody TaskDto task){
+        Tasks taskToService = new Tasks(id, task.task(), null, null); // статус null
+        try {
+            Tasks updated = toDoService.editTask(taskToService);
+            return ResponseEntity.ok(updated);
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(404).build();
         }
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Tasks> updateTask(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody TaskDto taskDto
+    ) {
+        try {
+            Tasks updated;
+            if ("marked as done".equals(taskDto.task())) {
+
+                updated = toDoService.completeTask(id);
+            } else {
+                Tasks taskToService = new Tasks(id, taskDto.task(), null, null);
+                updated = toDoService.editTask(taskToService);
+            }
+            return ResponseEntity.ok(updated);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(404).build();
+        }
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Tasks> deleteTask(
             @PathVariable("id") Long id
@@ -82,9 +94,9 @@ public class ToDoContoller {
         }
 
     }
+
 }
 
-//принимает запросы
 
 
 
